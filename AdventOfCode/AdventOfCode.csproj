@@ -61,6 +61,30 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Inputs\03.txt" />
+    <Content Include="Inputs\25.txt" />
+    <Content Include="Inputs\24.txt" />
+    <Content Include="Inputs\23.txt" />
+    <Content Include="Inputs\22.txt" />
+    <Content Include="Inputs\21.txt" />
+    <Content Include="Inputs\20.txt" />
+    <Content Include="Inputs\19.txt" />
+    <Content Include="Inputs\18.txt" />
+    <Content Include="Inputs\17.txt" />
+    <Content Include="Inputs\16.txt" />
+    <Content Include="Inputs\15.txt" />
+    <Content Include="Inputs\14.txt" />
+    <Content Include="Inputs\13.txt" />
+    <Content Include="Inputs\12.txt" />
+    <Content Include="Inputs\11.txt" />
+    <Content Include="Inputs\10.txt" />
+    <Content Include="Inputs\09.txt" />
+    <Content Include="Inputs\08.txt" />
+    <Content Include="Inputs\07.txt" />
+    <Content Include="Inputs\06.txt" />
+    <Content Include="Inputs\05.txt" />
+    <Content Include="Inputs\04.txt" />
+    <Content Include="Inputs\02.txt" />
     <Content Include="Inputs\01.txt" />
   </ItemGroup>
   <ItemGroup />
