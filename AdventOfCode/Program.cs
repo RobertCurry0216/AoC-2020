@@ -1,3 +1,18 @@
 ﻿using AoCHelper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-Solver.SolveAll();
+namespace AdventOfCode
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Solver.SolveLast();
+            Console.ReadKey();
+        }
+    }
+}
