@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode
 {
-    class Day03 : BaseDay
+    class Day15 : BaseDay
     {
         private readonly List<string> _input;
 
-        public Day03()
+        public Day15()
         {
             _input = File.ReadAllLines(InputFilePath).ToList();
         }
