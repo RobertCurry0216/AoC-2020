@@ -52,7 +52,7 @@ namespace AdventOfCode
 
             var reHgt = new Regex(@"(\d+)(cm|in)");
             var reHcl = new Regex(@"#[0-9a-f]{6}");
-            var rePid = new Regex(@"[0-9]{9}");
+            var rePid = new Regex(@"^[0-9]{9}$");
             var ecl = new[] { "amb", "blu", "brn", "gry", "grn", "hzl", "oth" };
             _input.ForEach(passport =>
             {
