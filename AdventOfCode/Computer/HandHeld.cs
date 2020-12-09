@@ -31,11 +31,7 @@ namespace AdventOfCode.Computer
         {
             public OperationType Type;
             public int Argument;
-
-            public Operation()
-            {
-
-            }
+            public int Run { get; set; } = 0;
         }
         #endregion
 
@@ -44,9 +40,9 @@ namespace AdventOfCode.Computer
         public int Accumulator { get; set; } = 0;
         public int InstructionPointer { get; set; } = 0;
         public List<Operation> Operations { get; set; } = new List<Operation>();
-        public List<int> Executed { get; set; } = new List<int>();
-        public bool Done { get => InstructionPointer >= Operations.Count; }
         public RunStatus Status { get; private set; } = RunStatus.Idle;
+
+        public Operation CurrentOp { get => Operations[InstructionPointer]; }
 
         private string Input;
 
@@ -83,9 +79,8 @@ namespace AdventOfCode.Computer
         {
             Status = RunStatus.Running;
 
-            while (!Executed.Contains(InstructionPointer))
+            while (CurrentOp.Run == 0)
             {
-                Executed.Add(InstructionPointer);
                 NextOp();
                 if (InstructionPointer >= Operations.Count)
                 {
@@ -114,6 +109,7 @@ namespace AdventOfCode.Computer
                 default:
                     throw new Exception("Unknown Operation");
             }
+            CurrentOp.Run += 1;
             InstructionPointer++;
         }
 
