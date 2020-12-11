@@ -11,7 +11,7 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            Solver.Solve<Day10>();
+            Solver.Solve<Day11>();
             Console.ReadKey();
         }
     }

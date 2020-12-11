@@ -38,32 +38,26 @@ namespace AdventOfCode
 
         public override string Solve_2()
         {
-            long count;
-
             var jolts = new List<int>(_input);
+            jolts.Add(0);
             jolts.Sort();
+            jolts.Add(jolts.Last() + 3);
+            var cache = new long[jolts.Count];
+            cache[cache.Count() - 1] = 1;
 
-            count = GetChargerArrangements(0, jolts, new long[jolts.Count]);
-
-            return $"{count}";
-        }
-
-        private long GetChargerArrangements(int idx, List<int> jolts, long[] cache)
-        {
-            if (cache[idx] != 0) return cache[idx];
-            if (idx >= jolts.Count - 1) return 1;
-
-            var value = jolts[idx];
-            long count = 0;
-
-            for (int i = idx + 1; i < Math.Min(jolts.Count, idx + 4); i++)
+            for (int i = jolts.Count - 2; i >= 0; i--)
             {
-                if (jolts[i] - value <= 3) count += GetChargerArrangements(i, jolts, cache);
+                long count = 0;
+                for (int j = 1; j < 4; j++)
+                {
+                    if (i + j >= jolts.Count) break;
+
+                    if (jolts[i + j] - jolts[i] <= 3) count += cache[i + j];
+                }
+                cache[i] = count;
             }
 
-            cache[idx] = count;
-
-            return count;
+            return $"{cache[0]}";
         }
     }
 }
