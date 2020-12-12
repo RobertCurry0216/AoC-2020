@@ -24,10 +24,10 @@ namespace AdventOfCode
 
             Dirs = new Dictionary<string, int[]>()
             {
-                { "N", new[] { 1, 0 } },
-                { "S", new[] { -1, 0 } },
-                { "E", new[] { 0, 1 } },
-                { "W", new[] { 0, -1 } }
+                { "N", new[] { 0, 1 } },
+                { "S", new[] { 0, -1 } },
+                { "E", new[] { 1, 0 } },
+                { "W", new[] { -1, 0 } }
             };
         }
 
@@ -61,8 +61,46 @@ namespace AdventOfCode
 
         public override string Solve_2()
         {
-            var count = 0;
-            return $"{count}";
+            var ferry = new[] { 0, 0 };
+            var waypoint = new[] { 10, 1 };
+
+            _input.ForEach(inst =>
+            {
+                if ("NSEW".Contains(inst.action))
+                {
+                    waypoint[0] += Dirs[inst.action][0] * inst.value;
+                    waypoint[1] += Dirs[inst.action][1] * inst.value;
+                }
+                else if (inst.action == "F")
+                {
+                    ferry[0] += waypoint[0] * inst.value;
+                    ferry[1] += waypoint[1] * inst.value;
+                }
+                else
+                {
+                    var rot = inst.action == "R" ? inst.value : 360 - inst.value;
+                    var coord = (int[])waypoint.Clone();
+                    switch (rot)
+                    {
+                        case 90:
+                            waypoint[0] = coord[1];
+                            waypoint[1] = coord[0] * -1;
+                            break;
+                        case 180:
+                            waypoint[0] = coord[0] * -1;
+                            waypoint[1] = coord[1] * -1;
+                            break;
+                        case 270:
+                            waypoint[0] = coord[1] * -1;
+                            waypoint[1] = coord[0];
+                            break;
+                        default:
+                            throw new Exception("Invalid rotation value");
+                    }
+                }
+            });
+
+            return $"{Math.Abs(ferry[0]) + Math.Abs(ferry[1])}";
         }
     }
 }
