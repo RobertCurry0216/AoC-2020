@@ -35,34 +35,52 @@ namespace AdventOfCode
 
         public override string Solve_2()
         {
-            var times = _input.Where(i => int.TryParse(i, out _)).Select(i => int.Parse(i)).ToList();
-            var lcm = times.Aggregate(times.First(), (int acc, int val) => Lcm(acc, val));
+            var n = new List<long>();            
+            var a = new List<long>();
 
-            
-
-            return $"{-1}";
-        }
-
-        private int Lcm(int a, int b)
-        {
-            if (a == 0 || b == 0) return 0;
-            return (a * b) / Gcd(a, b);
-        }
-
-        private int Gcd(int a, int b)
-        {
-            if (a < 1 || b < 1)
+            for (int i = 0; i < _input.Length; i++)
             {
-                throw new Exception("a or b is less than 1");
+                if (long.TryParse(_input[i], out var time))
+                {
+                    n.Add(time);
+                    a.Add(time - i);
+                }
             }
-            int remainder;
-            do
+
+            var departTime = ChineseRemainderTheorem.Solve(n.ToArray(), a.ToArray());
+
+            return $"{departTime}";
+        }
+
+        public static class ChineseRemainderTheorem
+        {
+            //https://rosettacode.org/wiki/Chinese_remainder_theorem#C.23
+
+            public static long Solve(long[] n, long[] a)
             {
-                remainder = a % b;
-                a = b;
-                b = remainder;
-            } while (b != 0);
-            return a;
+                long prod = n.Aggregate((long)1, (i, j) => i * j);
+                long p;
+                long sm = 0;
+                for (long i = 0; i < n.Length; i++)
+                {
+                    p = prod / n[i];
+                    sm += a[i] * ModularMultiplicativeInverse(p, n[i]) * p;
+                }
+                return sm % prod;
+            }
+
+            private static long ModularMultiplicativeInverse(long a, long mod)
+            {
+                long b = a % mod;
+                for (long x = 1; x < mod; x++)
+                {
+                    if ((b * x) % mod == 1)
+                    {
+                        return x;
+                    }
+                }
+                return 1;
+            }
         }
     }
 }
