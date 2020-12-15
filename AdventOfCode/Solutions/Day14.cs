@@ -104,42 +104,44 @@ namespace AdventOfCode
 
         private class MultiBitMask
         {
-            private List<long> masks = new List<long>() { 0 };
+            private List<BitMask> masks = new List<BitMask>();
 
             public MultiBitMask(string mask)
             {
+                var maskStrings = new List<StringBuilder>() { new StringBuilder() };
                 mask.ToCharArray().ToList().ForEach(c => 
                 {
-                    var newMasks = new List<long>();
-                    for (int i = 0; i < masks.Count; i++)
+                    var newMaskStrings = new List<StringBuilder>();
+                    for (int i = 0; i < maskStrings.Count; i++)
                     {
-                        var m = masks[i] << 1;
+                        var m = maskStrings[i];
                         switch (c)
                         {
                             case '1':
-                                m = m + 1;
+                                m.Append("1");
                                 break;
                             case 'X':
-                                newMasks.Add(m);
-                                m = m + 1;
+                                var n = new StringBuilder(m.ToString());
+                                n.Append("0");
+                                m.Append("1");
+                                newMaskStrings.Add(n);
+                                break;
+                            case '0':
+                                m.Append("X");
                                 break;
                             default:
                                 break;
                         }
-                        masks[i] = m;
                     }
-                    masks = masks.Union(newMasks).ToList();
+                    maskStrings = maskStrings.Union(newMaskStrings).ToList();
                 });
+
+                masks = maskStrings.Select(ms => new BitMask(ms.ToString())).ToList();
             }
 
             internal List<long> Apply(long k)
             {
-                var outList = new List<long>();
-                masks.ForEach(m => 
-                {
-                    var v = m | k;
-                    outList.Add(v); 
-                });
+                var outList = masks.Select(m => m.Apply(k)).ToList();
                 return outList;
             }
         }
