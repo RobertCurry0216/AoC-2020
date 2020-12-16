@@ -84,19 +84,17 @@ namespace AdventOfCode
                     mask1 = mask1 << 1;
                     mask0 = mask0 << 1;
                     mask1 += c == '1' ? 1 : 0;
-                    mask0 += c == '0' ? 1 : 0;
+                    mask0 += c == '0' ? 0 : 1;
                 });
             }
 
             internal long Apply(long v)
             {
                 // 1
-                v = v | mask1;
+                v |= mask1;
 
                 // 0
-                v = ~v;
-                v = v | mask0;
-                v = ~v;
+                v &= mask0;
 
                 return v;
             }
