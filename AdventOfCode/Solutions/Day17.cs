@@ -11,11 +11,29 @@ namespace AdventOfCode
 {
     class Day17 : BaseDay
     {
-        private readonly List<string> _input;
+        private bool[,,] pocket;
 
         public Day17()
         {
-            _input = File.ReadAllLines(InputFilePath).ToList();
+            var y = 498;
+            pocket = CreatePocket();
+            File.ReadAllLines(InputFilePath).ToList()
+                .ForEach(l => 
+                {
+                    var x = 498;
+                    foreach (var c in l.ToCharArray())
+                    {
+                        if (c == '#')
+                            pocket[x, y, 0] = true;
+                        x++;
+                    }
+                    y++;
+                });
+        }
+
+        private bool[,,] CreatePocket()
+        {
+            return new bool[1000,1000,1000];
         }
 
         public override string Solve_1()
