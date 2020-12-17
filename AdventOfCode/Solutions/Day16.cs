@@ -51,7 +51,13 @@ namespace AdventOfCode
         public override string Solve_2()
         {
             var count = 0;
-
+            var valid = Tickets.Skip(1).Where(t => t.All(t => Rules.Any(r => r.IsValid(t)))).ToList();
+            Rules.ForEach(r => 
+                r.index = Enumerable.Range(0, Rules.Count)
+                .Where(i => Tickets.All(t => r.IsValid(t[i])))
+                .ToList()
+            );
+            
 
             return $"{count}";
         }
@@ -60,6 +66,7 @@ namespace AdventOfCode
         {
             private int[] bounds;
             private string category;
+            public List<int> index;
 
             public Rule(GroupCollection groups)
             {
