@@ -16,7 +16,7 @@ namespace AdventOfCode
 
         public Day16()
         {
-            var reRule = new Regex(@"(?<cat>\w+): (?<v1>\d+)-(?<v2>\d+) or (?<v3>\d+)-(?<v4>\d+)");
+            var reRule = new Regex(@"^(?<cat>.+): (?<v1>\d+)-(?<v2>\d+) or (?<v3>\d+)-(?<v4>\d+)");
             var reTicket = new Regex(@"(\d+,)+");
             foreach (var line in File.ReadAllLines(InputFilePath))
             {
@@ -50,14 +50,29 @@ namespace AdventOfCode
 
         public override string Solve_2()
         {
-            var count = 0;
             var valid = Tickets.Skip(1).Where(t => t.All(t => Rules.Any(r => r.IsValid(t)))).ToList();
-            Rules.ForEach(r => 
+            Rules.ForEach(r =>
                 r.index = Enumerable.Range(0, Rules.Count)
-                .Where(i => Tickets.All(t => r.IsValid(t[i])))
+                .Where(i => valid.All(t => r.IsValid(t[i])))
                 .ToList()
             );
-            
+
+            while (Rules.Any(r => r.index.Count > 1))
+            {
+                foreach (var rule in Rules)
+                {
+                    if(rule.index.Count == 1)
+                    {
+                        Rules.ForEach(r => { if (r != rule) r.index.Remove(rule.index[0]); });
+                    }
+                }
+            }
+
+            long count = Rules.Where(r => r.Category.StartsWith("departure"))
+                .Aggregate((long)1, (acc, rule) => 
+                {
+                    return acc * rule.Get(Tickets[0]);
+                });
 
             return $"{count}";
         }
@@ -65,12 +80,12 @@ namespace AdventOfCode
         internal class Rule
         {
             private int[] bounds;
-            private string category;
+            public string Category;
             public List<int> index;
 
             public Rule(GroupCollection groups)
             {
-                category = groups["cat"].Value;
+                Category = groups["cat"].Value;
                 bounds = new[]
                 {
                     int.Parse(groups["v1"].Value),
@@ -83,6 +98,11 @@ namespace AdventOfCode
             public bool IsValid(int v)
             {
                 return (bounds[0] <= v && v <= bounds[1]) || (bounds[2] <= v && v <= bounds[3]);
+            }
+
+            public int Get(List<int> ticket)
+            {
+                return ticket[index[0]];
             }
         }
     }
